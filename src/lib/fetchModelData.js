@@ -5,8 +5,8 @@
  * @returns {Promise}       A promise that resolves with an object containing the data.
  */
 function fetchModel(url) {
-  // prepend base URL if it's a relative path (for CodeSandbox support)
-  const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8081";
+  // Gắn cứng URL của Backend CodeSandbox để đảm bảo luôn chạy
+  const baseUrl = process.env.REACT_APP_API_URL || "https://28wxk2-8081.csb.app";
   const fetchUrl = url.startsWith("http") ? url : baseUrl + url;
 
   return new Promise(function (resolve, reject) {
