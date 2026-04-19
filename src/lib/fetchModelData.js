@@ -13,7 +13,7 @@ function fetchModel(url) {
     fetch(fetchUrl)
       .then((response) => {
         if (!response.ok) {
-          reject(new Error(\HTTP error! status: \\));
+          reject(new Error("HTTP error! status: " + response.status));
           return;
         }
         return response.json();
