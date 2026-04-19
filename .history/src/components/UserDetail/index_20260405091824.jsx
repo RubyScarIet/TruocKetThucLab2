@@ -1,0 +1,46 @@
+import React, { useState, useEffect } from "react";
+import { Typography, Button, Card, CardContent, Box, CircularProgress } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import fetchModel from "../../lib/fetchModelData";
+import "./styles.css";
+
+function UserDetail() {
+  const { userId } = useParams();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchModel(`/user/${userId}`)
+      .then((response) => {
+        setUser(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Lỗi fetch user:", err);
+        setLoading(false);
+      });
+  }, [userId]); // Chạy lại khi đổi người dùng ở danh sách bên trái
+
+  if (loading) return <CircularProgress sx={{ m: 2 }} />;
+  if (!user) return <Typography variant="h6">Không tìm thấy người dùng.</Typography>;
+
+  return (
+    <Box sx={{ p: 2 }}>
+      <Card variant="outlined">
+        <CardContent>
+          <Typography variant="h4" gutterBottom>{`${user.first_name} ${user.last_name}`}</Typography>
+          <Typography variant="h6" color="text.secondary">Nghề nghiệp: {user.occupation}</Typography>
+          <Typography variant="subtitle1" sx={{ mb: 2 }}> Địa điểm: {user.location}</Typography>
+          <Typography variant="body1" sx={{ mb: 3 }}>{user.description}</Typography>
+          
+          <Button variant="contained" component={Link} to={`/photos/${userId}`}>
+            Xem Album Ảnh
+          </Button>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}
+
+export default UserDetail;
